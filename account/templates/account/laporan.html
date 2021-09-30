@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'css/fa/all.min.css' %}" rel="stylesheet" type="text/css">
+<!--<link rel="stylesheet" href="{% static 'js/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">-->
+
+{% endblock head %}
+
+{% block content %}
+
+ 
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="mb-2 text-gray-800 h3">Daftar Laporan Masuk</h1>
+
+    <!-- DataTales Example -->
+    <div class="mb-4 shadow card">
+        <div class="py-3 card-header">
+            <h6 class="m-0 font-weight-bold text-primary">Tabel Laporan</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Email Pelapor</th>
+                            <th>Nama Pelapor</th>
+                            <th>URL</th>
+                            <th>Screenshot</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Anonym</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Email Pelapor</th>
+                            <th>Nama Pelapor</th>
+                            <th>URL</th>
+                            <th>Screenshot</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Anonym</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for rep in reports %}
+                        <tr>
+                            <input type="hidden" value="{{rep.verdict}}" id="verdict{{rep.id}}">
+                            <input type="hidden" value="{{rep.verdictDate}}" id="verdictdate{{rep.id}}">
+                            <input type="hidden" value="{{rep.verdictDesc}}" id="feedback{{rep.id}}">
+                            <input type="hidden" value="{{rep.verdictJudge}}" id="admin{{rep.id}}">
+                            <td>{{rep.id}}</td>
+                            <td id="date{{rep.id}}">{{rep.dateReported}}</td>
+                            {% if rep.isAnonym == False %}
+                                <td id="email{{rep.id}}">{{rep.user.email}}</td>
+                                <td id="username{{rep.id}}">{{rep.user.username}}</td>
+                            {% else %}
+                                <td id="email{{rep.id}}">******</td>
+                                <td id="username{{rep.id}}">******</td>
+                            {% endif %}
+                            <td id="url{{rep.id}}">{{rep.url}}</td>
+                            <td id="img{{rep.id}}">
+                                <img src="{{rep.img.url}}" alt="{{rep.img.url}}" width="70px" height="70px">
+                            </td>
+                            <td id="category{{rep.id}}">{{rep.category}}</td>
+                            {% if rep.status == 'Selesai' %}
+                            <td id="status{{rep.id}}" style="font-weight: bold; color: green;">{{rep.status}}</td>
+                            {% elif rep.status == 'Proses' %}
+                            <td id="status{{rep.id}}" style="font-weight: bold; color: coral;">{{rep.status}}</td>
+                            {% else %}
+                            <td id="status{{rep.id}}" style="font-weight: bold; color: black;">{{rep.status}}</td>
+                            {% endif %}
+                            <td id="isAnonym{{rep.id}}">{{rep.isAnonym}}</td>
+                            <td id="description{{rep.id}}">{{rep.description}}</td>
+                            <td>
+                                <!--<button class="btn btn-lg btn-primary btn-block" type="submit" onclick="onSubmit({{rep.id}},{{value}})">Submit</button> -->
+                                <button type="button" id="{{rep.id}}" class="btn btn-primary btn-block"  onclick="viewReport(this.id)">
+                                  View
+                                </button><br>
+                                {% if rep.status == 'Selesai' %}
+                                <button type="button" id="{{rep.id}}" class="btn btn-danger btn-block" onclick="processReport(this.id)" disabled>Process</button>
+                                <button type="button" id="{{rep.id}}" class="btn btn-success btn-block" onclick="responReport(this.id,{{request.user.id}})" disabled>Respon</button>
+                                {% elif rep.status == 'Proses' %}
+                                <button type="button" id="{{rep.id}}" class="btn btn-danger btn-block" onclick="processReport(this.id)" disabled>Process</button>
+                                <button type="button" id="{{rep.id}}" class="btn btn-success btn-block" onclick="responReport(this.id,{{request.user.id}})">Respon</button>
+                                {% else %}
+                                <button type="button" id="{{rep.id}}" class="btn btn-danger btn-block" onclick="processReport(this.id)">Process</button>
+                                <button type="button" id="{{rep.id}}" class="btn btn-success btn-block" onclick="responReport(this.id,{{request.user.id}})">Respon</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewModalHeader">View Modal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5 id="modal_body">Detail Laporan</h5>
+        <table>
+            <tr>
+                <td>Nama Pelapor : </td>
+                <td id="modal_nama"></td>
+            </tr>
+            <tr>
+                <td>Email Pelapor : </td>
+                <td id="modal_email"></td>
+            </tr>
+            <tr>
+                <td>Tanggal Lapor : </td>
+                <td id="modal_tanggal"></td>
+            </tr>
+            <tr>
+                <td>URL : </td>
+                <td id="modal_url"></td>
+            </tr>
+            <tr>
+                <td>Gambar : </td>
+                <td id="modal_img"></td>
+            </tr>
+            <tr>
+                <td>Category : </td>
+                <td id="modal_category"></td>
+            </tr>
+            <tr>
+                <td>Status : </td>
+                <td id="modal_status"></td>
+            </tr>
+            <tr>
+                <td>Description : </td>
+                <td id="modal_description"></td>
+            </tr>
+            <tr>
+                <td>Keputusan : </td>
+                <td id="modal_verdict"></td>
+            </tr>
+            <tr>
+                <td>Tanggal Keputusan : </td>
+                <td id="modal_verdict_date"></td>
+            </tr>
+            <tr>
+                <td>Feedback : </td>
+                <td id="modal_feedback"></td>
+            </tr>
+            <tr>
+                <td>Feedback Admin : </td>
+                <td id="modal_admin"></td>
+            </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="processModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Proses Laporan Ini?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Dengan klik tombol proses ini, anda akan memberitahukan user bahwa laporan tersebut sedang diproses</h5>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="proses_laporan">Proses</button>
+        <button type="button" class="btn btn-primary" id="proses_cetak">Proses dan cetak report</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Respon -->
+<div class="modal fade" id="responModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Respon Laporan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Berikan respon kepada user</h5><br>
+        <table>
+            <tr>
+                <td>Keputusan</td>
+                <td><input type="text" id="respon_verdict"></td>
+            </tr>
+            <tr>
+                <td>Feedback</td>
+                <td><textarea name="" id="respon_feedback" cols="30" rows="10"></textarea></td>
+            </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="respon_laporan">Respon</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block script}
+<!--<script src="{% static 'js/datatables/jquery.dataTables.min.js' %}"></script>-->
+<script>
+// Call the dataTables jQuery plugin
+
+$(document).ready(function() {
+    $('#dataTable').DataTable({
+        "paging": true
+    });
+});
+</script>
+
+{% endblock script}

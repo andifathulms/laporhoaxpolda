@@ -1,0 +1,364 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Admin Pelaporan Hoax Polda Sumbar">
+    <meta name="author" content="Polda Sumbar">
+
+    <title>Lapor Hoax - Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    {% block head %}
+    {% endblock head %}
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        {% include 'snippets/sidebar.html' %}
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                {% include 'snippets/header.html' %}
+                <!-- End of Topbar -->
+
+                {% block content %}
+                {% endblock content%}
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="my-auto text-center copyright">
+                        <span>Copyright &copy; Your Website 2021</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Custom scripts for all pages-->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    <!--<script src="{% static 'js/jquery-3.6.0.js' %}"></script>-->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+    <script>
+    // Call the dataTables jQuery plugin
+
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            "paging": true
+        });
+    });
+
+    function viewReport(id){
+        let dateID = "#date"+id;
+        let emailID = "#email"+id;
+        let usernameID = "#username"+id;
+        let urlID = "#url"+id;
+        let imgID = "#img"+id;
+        let categoryID = "#category"+id;
+        let statusID = "#status"+id;
+        let descriptionID = "#description"+id;
+        let verdictID = "#verdict"+id;
+        let feedbackID = "#feedback"+id;
+        let adminID = "#admin"+id;
+        let vdateID = "#verdictdate"+id;
+
+        let date = document.querySelector(dateID);
+        let email = document.querySelector(emailID);
+        let username = document.querySelector(usernameID);
+        let url = document.querySelector(urlID);
+        let img = document.querySelector(imgID);
+        let category = document.querySelector(categoryID);
+        let status = document.querySelector(statusID);
+        let description = document.querySelector(descriptionID);
+        let verdict = document.querySelector(verdictID);
+        let feedback = document.querySelector(feedbackID);
+        let admin = document.querySelector(adminID);
+        let vdate = document.querySelector(vdateID);
+
+        console.log(date.textContent);
+        console.log(email.textContent);
+        console.log(username.textContent);
+        console.log(url.textContent);
+        console.log(img.textContent);
+        console.log(category.textContent);
+        console.log(status.textContent);
+        console.log(description.textContent);
+        console.log(verdict.value);
+
+        $("#modal_nama").html(username.textContent);
+        $("#modal_email").html(email.textContent);
+        $("#modal_url").html(url.textContent);
+        $("#modal_imgl").html(img.textContent);
+        $("#modal_tanggal").html(date.textContent);
+        $("#modal_category").html(category.textContent);
+        $("#modal_status").html(status.textContent);
+        $("#modal_description").html(description.textContent);
+        $("#modal_verdict").html(verdict.value);
+        $("#modal_feedback").html(feedback.value);
+        $("#modal_admin").html(admin.value);
+        $("#modal_verdict_date").html(vdate.value);
+        $('#viewModal').modal('show');
+    }
+
+    function processReport(id,userID){
+        let dateID = "#date"+id;
+        let emailID = "#email"+id;
+        let usernameID = "#username"+id;
+        let urlID = "#url"+id;
+        let imgID = "#img"+id;
+        let categoryID = "#category"+id;
+        let statusID = "#status"+id;
+        let descriptionID = "#description"+id;
+        let verdictID = "#verdict"+id;
+        let feedbackID = "#feedback"+id;
+        let adminID = "#admin"+id;
+        let vdateID = "#verdictdate"+id;
+        let isAnonID = "#isAnonym"+id;
+
+        let date = document.querySelector(dateID);
+        let email = document.querySelector(emailID);
+        let username = document.querySelector(usernameID);
+        let url = document.querySelector(urlID);
+        let img = document.querySelector(imgID);
+        let category = document.querySelector(categoryID);
+        let status = document.querySelector(statusID);
+        let description = document.querySelector(descriptionID);
+        let verdict = document.querySelector(verdictID);
+        let feedback = document.querySelector(feedbackID);
+        let admin = document.querySelector(adminID);
+        let vdate = document.querySelector(vdateID);
+        let isAnon = document.querySelector(isAnonID);
+        
+        $('#processModal').modal('show');
+        
+        $('#proses_laporan').click(function(event, eventElement){
+            $.ajax({
+            headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+            type: 'POST',
+            url: $(eventElement).data('url'),
+            //dataType: 'json',
+            data: {
+                'id':id,
+            },
+            success: function (data){
+                if (data.msg === "Success"){
+                    console.log('AJAX success');
+                    $('#processModal').modal('hide');
+                }else{
+                    console.log('AJAX failed');
+                    $('#processModal').modal('hide');
+                }
+                window.location.reload();
+                return false;
+            },
+            error: function(jqXHR, textStatus, errorThrown) { 
+               console.log(textStatus);
+               $('#processModal').modal('hide');
+            },
+            complete: function (data){
+                console.log(data)
+                $('#processModal').modal('hide');
+                window.location.reload();
+                return false;
+            },
+        });
+        //window.location.reload();
+        //return false;
+        })
+
+        $('#proses_cetak').click(function(event, eventElement){
+            $.ajax({
+            headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+            type: 'POST',
+            url: $(eventElement).data('url'),
+            //dataType: 'json',
+            data: {
+                'id':id,
+            },
+            success: function (data){
+                if (data.msg === "Success"){
+                    console.log('AJAX success');
+                    $('#processModal').modal('hide');
+                }else{
+                    console.log('AJAX failed');
+                    $('#processModal').modal('hide');
+                }
+                //getPDF();
+                window.location.reload();
+                return false;
+            },
+            error: function(jqXHR, textStatus, errorThrown) { 
+               console.log(textStatus);
+               $('#processModal').modal('hide');
+            },
+            complete: function (data){
+                console.log(data)
+                $('#processModal').modal('hide');
+                getPDF(id,date,username,url,img,category,status,isAnon,description,verdict,vdate,feedback,admin);
+                window.location.reload();
+                return false;
+            },
+        });
+        //window.location.reload();
+        //return false;
+        })
+
+    }
+
+    function getCookie(c_name){
+        if (document.cookie.length > 0)
+        {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1)
+            {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) c_end = document.cookie.length;
+                return unescape(document.cookie.substring(c_start,c_end));
+            }
+        }
+        return "";
+     }
+
+    function responReport(id,user){
+        $('#responModal').modal('show');
+        $('#respon_laporan').click(function(event, eventElement){
+            let verdict = document.querySelector('#respon_verdict');
+            let feedback = document.querySelector('#respon_feedback');
+            $.ajax({
+            headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+            type: 'POST',
+            url: $(eventElement).data('url'),
+            //dataType: 'json',
+            data: {
+                'key':0,
+                'id':id,
+                'user':user,
+                'verdict': verdict.value,
+                'feedback': feedback.value,
+            },
+            success: function (data){
+                if (data.msg === "Success"){
+                    console.log('AJAX success');
+                    $('#responModal').modal('hide');
+                }else{
+                    console.log('AJAX failed');
+                    $('#responModal').modal('hide');
+                }
+                window.location.reload();
+                return false;
+            },
+            error: function(jqXHR, textStatus, errorThrown) { 
+               console.log(textStatus);
+               $('#responModal').modal('hide');
+            },
+            complete: function (data){
+                console.log(data)
+                $('#responModal').modal('hide');
+                window.location.reload();
+                return false;
+            },
+        });
+        //window.location.reload();
+        //return false;
+        })
+
+    }
+
+    function getPDF(repID,date,user,url,img,cat,status,isAnon,desc,verdict,verDate,verDesc,verJudge){
+        //import { jsPDF } from "jspdf";
+        console.log(user)
+        window.jsPDF = window.jspdf.jsPDF;
+        // Default export is a4 paper, portrait, using millimeters for units
+        var doc = new jsPDF();
+        doc.setFontSize(40);
+        doc.text("Laporan Hoax", 60, 20);
+        console.log(repID)
+        doc.setFontSize(16);
+        doc.text("Id", 20, 40);
+        doc.text(":", 70, 40);
+        doc.text(repID, 75, 40);
+        doc.text("Nama", 20, 50);
+        doc.text(":", 70, 50);
+        doc.text(user.textContent, 75, 50);
+        doc.text("Link", 20, 60);
+        doc.text(":", 70, 60);
+        doc.text(url.textContent, 75, 60);
+        doc.text("Screenshot", 20, 70);
+        doc.text(":", 70, 70);
+        doc.addImage(img.textContent, "JPEG", 75, 65, 43, 43);
+        doc.text("Kategori", 20, 120);
+        doc.text(":", 70, 120);
+        doc.text(cat.textContent, 75, 120);
+        doc.text("Status", 20, 130);
+        doc.text(":", 70, 130);
+        doc.text(status.textContent, 75, 130);
+        doc.text("Anonim", 20, 140);
+        doc.text(":", 70, 140);
+        doc.text(isAnon.textContent, 75, 140);
+        doc.text("Tanggal Report", 20, 150);
+        doc.text(":", 70, 150);
+        doc.text(date.textContent, 75, 150);
+        doc.text("Deskripsi", 20, 160);
+        doc.text(":", 70, 160);
+        doc.text(desc.textContent, 75, 160);
+        doc.text("Keputusan", 20, 170);
+        doc.text(":", 70, 170);
+        doc.text(verdict.value, 75, 170);
+        doc.text("Feedback", 20, 180);
+        doc.text(":", 70, 180);
+        doc.text(verDesc.value, 75, 180);
+        doc.text("Tanggal Keputusan", 20, 190);
+        doc.text(":", 70, 190);
+        doc.text(verDate.value, 75, 190);
+        doc.text("Admin", 20, 200);
+        doc.text(":", 70, 200);
+        doc.text(verJudge.value, 75, 200);
+        doc.save("report.pdf");
+    }
+
+    </script>
+
+
+    {% block script %}
+
+    {% endblock script %}
+
+</body>
+
+</html>
