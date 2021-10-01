@@ -99,7 +99,7 @@
                                 <button type="button" id="{{rep.id}}" class="btn btn-success btn-block" onclick="responReport(this.id,{{request.user.id}})">Respon</button>
                                 {% else %}
                                 <button type="button" id="{{rep.id}}" class="btn btn-danger btn-block" onclick="processReport(this.id)">Process</button>
-                                <button type="button" id="{{rep.id}}" class="btn btn-success btn-block" onclick="responReport(this.id,{{request.user.id}})">Respon</button>
+                                <button type="button" id="{{rep.id}}" class="btn btn-success btn-block" onclick="responReport(this.id,{{request.user.id}})" disabled>Respon</button>
                                 {% endif %}
                             </td>
                         </tr>

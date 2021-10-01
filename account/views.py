@@ -58,7 +58,8 @@ def user_view(request):
 def laporan_view(request):
 	if request.is_ajax():
 		data = request.POST
-		if data["key"]:
+		print(data)
+		if data["key"] == "0":
 			user = Account.objects.get(id=data["user"])
 			report = Report.objects.get(id = data["id"])
 			report.status = "Selesai"
@@ -67,11 +68,13 @@ def laporan_view(request):
 			report.verdictDesc = data["feedback"]
 			report.verdictDate = timezone.now()
 			report.save()
-		else:
+		if data["key"] == "1":
+			print("Report : ")
 			report = Report.objects.get(id = data["id"])
 			report.status = "Proses"
-			report.save()
+			print("Report : ")
 			print(report)
+			report.save()
 	rep = Report.objects.all()
 	for r in rep:
 		print(r.user.email)
