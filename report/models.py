@@ -25,3 +25,7 @@ class Report(models.Model):
 	verdictDate = models.DateTimeField(blank=True,null=True)
 	verdictJudge = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True,null=True,related_name="admin_account")
 
+
+class Category(models.Model):
+	id = models.BigAutoField(primary_key=True)
+	name = models.CharField(max_length=100)

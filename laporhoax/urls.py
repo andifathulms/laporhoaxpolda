@@ -28,13 +28,15 @@ from account.views import (
     update_berita_view,
     delete_berita_view,
     user_view,
-    logout_view,)
+    logout_view,
+    kategori_view)
 
 urlpatterns = [
     path('', login_view, name='main'),
     path('logout/', logout_view, name='logout-view'),
     path('home/', home_view, name='home'),
     path('laporan/', laporan_view, name='laporan'),
+    path('kategori/', kategori_view, name='kategori'),
     path('berita/', berita_view, name='berita'),
     path('berita/add/', isi_berita_view, name='isi-berita'),
     path('berita/update/<pk>', update_berita_view, name='update-berita'),

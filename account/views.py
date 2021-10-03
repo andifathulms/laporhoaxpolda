@@ -2,14 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 
-from report.models import Report
+from report.models import Report, Category
 from account.models import Account
 from feed.models import Feed
 from feed.forms import FeedForm
 
 from account.forms import AccountAuthenticationForm
 
+
+@login_required(login_url='/')
 def home_view(request):
 	context = {}
 	countUser = Account.objects.all().count()
@@ -31,6 +34,14 @@ def home_view(request):
 	reportSaved = Report.objects.filter(status="Saved").count()
 	reportProses = Report.objects.filter(status="Proses").count()
 	reportSelesai = Report.objects.filter(status="Selesai").count()
+
+	kategori = Category.objects.all()
+	cats = []
+	color = ["#eb4034", "#0000FF", "#34eb5f", "#131413", "#7014cc", "#dbf723", "#a1f571", "#79167a", "#87480c"]
+	for count,cat in enumerate(kategori):
+		repcount = Report.objects.filter(category=cat.name).count()
+		cats.append((cat, repcount, color[count]))
+
 	context["countUser"] = countUser
 	context["countFeed"] = countFeed
 	context["countReport"] = countReport
@@ -49,12 +60,16 @@ def home_view(request):
 	context["reportSaved"] = reportSaved
 	context["reportProses"] = reportProses
 	context["reportSelesai"] = reportSelesai
+	context["kategori"] = cats
+	
 	return render(request,"account/home.html",context)
 
+@login_required(login_url='/')
 def user_view(request):
 	user = Account.objects.all()
 	return render(request, "account/users.html", {"users":user})
 
+@login_required(login_url='/')
 def laporan_view(request):
 	if request.is_ajax():
 		data = request.POST
@@ -80,6 +95,7 @@ def laporan_view(request):
 		print(r.user.email)
 	return render(request, "account/laporan.html", {"reports":rep})
 
+@login_required(login_url='/')
 def berita_view(request):
 	if request.is_ajax():
 		data = request.POST
@@ -89,6 +105,7 @@ def berita_view(request):
 	feed = Feed.objects.all()
 	return render(request, "account/berita.html", {"feeds":feed})
 
+@login_required(login_url='/')
 def isi_berita_view(request):
 	form = FeedForm(request.POST or None)
 	user = Account.objects.filter(is_admin=True)
@@ -96,6 +113,7 @@ def isi_berita_view(request):
 		form.save()
 	return render(request, "account/isiberita.html", {'form':form,'user':user})
 
+@login_required(login_url='/')
 def update_berita_view(request, pk):
 	obj = get_object_or_404(Feed, id = pk)
 	print(obj)
@@ -105,6 +123,7 @@ def update_berita_view(request, pk):
 		form.save()
 	return render(request, "account/editberita.html", {'form':form,'user':user})
 
+@login_required(login_url='/')
 def delete_berita_view(request, pk):
 	feed = Feed.objects.all()
 	obj = get_object_or_404(Feed, id=pk)
@@ -112,6 +131,21 @@ def delete_berita_view(request, pk):
 		print(obj)
 		obj.delete()
 	return render(request, "account/berita.html", {"feeds":feed})
+
+@login_required(login_url='/')
+def kategori_view(request):
+	category = Category.objects.all()
+	cats = []
+	if request.POST and "save" in request.POST:
+		data = request.POST
+		c = Category.objects.create(name=data["kategori"])
+		c.save()
+
+	for cat in category:
+		repcount = Report.objects.filter(category=cat.name).count()
+		cats.append((cat, repcount))
+	return render(request, "account/kategori.html", {"category":cats})
+
 
 def login_view(request, *args, **kwargs):
 	context = {}

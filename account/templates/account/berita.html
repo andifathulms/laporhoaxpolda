@@ -27,7 +27,6 @@
                     <thead>
                         <tr>
                             <th>Judul</th>
-                            <th>Isi</th>
                             <th>Thumbnail</th>
                             <th>Author</th>
                             <th>View</th>
@@ -37,7 +36,6 @@
                     <tfoot>
                         <tr>
                             <th>Judul</th>
-                            <th>Isi</th>
                             <th>Thumbnail</th>
                             <th>Author</th>
                             <th>View</th>
@@ -48,13 +46,15 @@
                         {% for f in feeds %}
                         <tr>
                             <td>{{f.title}}</td>
-                            <td>{{f.content}}</td>
                             <td>
                                 <img src="{{f.thumbnail.url}}" alt="{{f.thumbnail.url}}" width="70px" height="70px">
                             </td>
                             <td>{{f.author}}</td>
                             <td>{{f.view}}</td>
-                            <td>     
+                            <td>
+                                <form action="{#% url 'update-berita' pk=f.id %#}">
+                                    <button class="btn btn-lg btn-info btn-block" type="submit">View</button>
+                                </form>   
                                 <form action="{% url 'update-berita' pk=f.id %}">
                                     <button class="btn btn-lg btn-warning btn-block" type="submit">Edit</button>
                                 </form>
