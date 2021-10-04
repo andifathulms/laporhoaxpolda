@@ -9,6 +9,8 @@ from knox.views import LoginView as KnoxLoginView
 from .serializers import UserSerializer, RegisterSerializer, ChangePasswordSerializer, UserSerializer, TokenSerializer
 
 from django.contrib.auth import login
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 from account.models import Account
 
@@ -82,6 +84,19 @@ class UserDetailGeneral(generics.ListAPIView):
     queryset = Account.objects.all().filter(is_staff=True)
     serializer_class = UserSerializer
 
-class TokenUserList(generics.ListAPIView):
+class TokenUserList(generics.RetrieveAPIView):
     queryset = AuthToken.objects.all()
     serializer_class = TokenSerializer
+
+@csrf_exempt
+def getUser(request):
+    data = request.headers
+    try:
+        user = [Account.objects.get(email=data["email"])]
+    except Account.DoesNotExist:
+        return HttpResponse(status=404)
+    if request.method == 'GET':
+        serializer = UserSerializer(user, many=True)
+        #print(serializer)
+        return JsonResponse(serializer.data, safe=False)
+
