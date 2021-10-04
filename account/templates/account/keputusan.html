@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'css/fa/all.min.css' %}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{% static 'js/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+
+{% endblock head %}
+
+{% block content %}
+ 
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="mb-2 text-gray-800 h3">Daftar Berita</h1>
+    <!-- DataTales Example -->
+    <div class="mb-4 shadow card">
+        <div class="py-3 card-header">
+            <h6 class="m-0 font-weight-bold text-primary">Tabel Kategori</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Jenis Kategori</th>
+                            <th>Jumlah Laporan</th>
+                            
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for f in verdict %}
+                        <tr>
+                            <td>{{f.0.id}}</td>
+                            <td>{{f.0.name}}</td>
+                            <td>{{f.1}}</td>
+                            <!--
+                            <td>    
+                                <form action="{#% url 'update-berita' pk=f.id %#}">
+                                    <button class="btn btn-lg btn-warning btn-block" type="submit">Edit</button>
+                                </form>
+                                <form class="form-delete" action="{#% url 'delete-berita' pk=f.id %#}" method="POST">
+                                    {% csrf_token %}
+                                    <button id="btndelete" class="btn btn-lg btn-danger btn-block">Delete</button>
+                                </form>
+                                
+                            </td-->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-lg btn-success mb-4" type="submit" data-toggle="modal" data-target="#exampleModal">Tambah Kategori</button>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Keputusan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="" method="POST">{% csrf_token %}
+          <div class="modal-body">
+            
+            <table>
+                <tr>
+                    <td>Jenis Kategori</td>
+                    <td><input type="text" id="new_kategori" name="keputusan" required></td>
+                </tr>
+            </table>
+            
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" name="save">Save changes</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
-from report.models import Report, Category
+from report.models import Report, Category, Verdict
 from account.models import Account
 from feed.models import Feed
 from feed.forms import FeedForm
@@ -61,13 +61,18 @@ def home_view(request):
 	context["reportProses"] = reportProses
 	context["reportSelesai"] = reportSelesai
 	context["kategori"] = cats
+
+	user = request.user
+	context["staff"] = user.is_staff
+	context["admin"] = user.is_admin
 	
 	return render(request,"account/home.html",context)
 
 @login_required(login_url='/')
 def user_view(request):
 	user = Account.objects.all()
-	return render(request, "account/users.html", {"users":user})
+	userxx = request.user
+	return render(request, "account/users.html", {"users":user, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 @login_required(login_url='/')
 def laporan_view(request):
@@ -91,9 +96,11 @@ def laporan_view(request):
 			print(report)
 			report.save()
 	rep = Report.objects.all()
+	cat = Verdict.objects.all()
 	for r in rep:
 		print(r.user.email)
-	return render(request, "account/laporan.html", {"reports":rep})
+	userxx = request.user
+	return render(request, "account/laporan.html", {"reports":rep, "category":cat, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 @login_required(login_url='/')
 def berita_view(request):
@@ -103,7 +110,8 @@ def berita_view(request):
 			feed = Feed.objects.get(id=data["id"])
 			feed.delete()
 	feed = Feed.objects.all()
-	return render(request, "account/berita.html", {"feeds":feed})
+	userxx = request.user
+	return render(request, "account/berita.html", {"feeds":feed, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 @login_required(login_url='/')
 def isi_berita_view(request):
@@ -111,7 +119,8 @@ def isi_berita_view(request):
 	user = Account.objects.filter(is_admin=True)
 	if form.is_valid():
 		form.save()
-	return render(request, "account/isiberita.html", {'form':form,'user':user})
+	userxx = request.user
+	return render(request, "account/isiberita.html", {'form':form,'user':user, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 @login_required(login_url='/')
 def update_berita_view(request, pk):
@@ -121,7 +130,8 @@ def update_berita_view(request, pk):
 	user = Account.objects.filter(is_admin=True)
 	if form.is_valid():
 		form.save()
-	return render(request, "account/editberita.html", {'form':form,'user':user})
+	userxx = request.user
+	return render(request, "account/editberita.html", {'form':form,'user':user, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 @login_required(login_url='/')
 def delete_berita_view(request, pk):
@@ -130,7 +140,8 @@ def delete_berita_view(request, pk):
 	if request.method =="POST":
 		print(obj)
 		obj.delete()
-	return render(request, "account/berita.html", {"feeds":feed})
+	userxx = request.user
+	return render(request, "account/berita.html", {"feeds":feed, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 @login_required(login_url='/')
 def kategori_view(request):
@@ -144,8 +155,25 @@ def kategori_view(request):
 	for cat in category:
 		repcount = Report.objects.filter(category=cat.name).count()
 		cats.append((cat, repcount))
-	return render(request, "account/kategori.html", {"category":cats})
 
+	userxx = request.user
+	return render(request, "account/kategori.html", {"category":cats, "staff":userxx.is_staff,"admin":userxx.is_admin})
+
+@login_required(login_url='/')
+def keputusan_view(request):
+	keputusan = Verdict.objects.all()
+	cats = []
+	if request.POST and "save" in request.POST:
+		data = request.POST
+		c = Verdict.objects.create(name=data["keputusan"])
+		c.save()
+
+	for cat in keputusan:
+		repcount = Report.objects.filter(verdict=cat.name).count()
+		cats.append((cat, repcount))
+
+	userxx = request.user
+	return render(request, "account/keputusan.html", {"verdict":cats, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 def login_view(request, *args, **kwargs):
 	context = {}
@@ -164,7 +192,7 @@ def login_view(request, *args, **kwargs):
 			password = request.POST['password']
 			user = authenticate(email=email, password=password)
 			print(user)
-			if user.is_admin == True:
+			if user.is_admin == True or user.is_staff == True:
 				login(request, user)
 				if destination:
 					return redirect(destination)

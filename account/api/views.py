@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from knox.models import AuthToken
 from knox.views import LoginView as KnoxLoginView
 
-from .serializers import UserSerializer, RegisterSerializer, ChangePasswordSerializer, UserSerializer
+from .serializers import UserSerializer, RegisterSerializer, ChangePasswordSerializer, UserSerializer, TokenSerializer
 
 from django.contrib.auth import login
 
@@ -81,3 +81,7 @@ class UserDetail(generics.RetrieveAPIView):
 class UserDetailGeneral(generics.ListAPIView):
     queryset = Account.objects.all().filter(is_staff=True)
     serializer_class = UserSerializer
+
+class TokenUserList(generics.ListAPIView):
+    queryset = AuthToken.objects.all()
+    serializer_class = TokenSerializer

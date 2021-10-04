@@ -28,18 +28,22 @@
                         <tr>
                             <th>Email</th>
                             <th>Username</th>
+                            <th>Instansi</th>
                             <th>Date Joined</th>
                             <th>Last Login</th>
                             <th>Staff?</th>
+                            <th>Admin?</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
                             <th>Email</th>
                             <th>Username</th>
+                            <th>Instansi</th>
                             <th>Date Joined</th>
                             <th>Last Login</th>
                             <th>Staff?</th>
+                            <th>Admin?</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -47,9 +51,11 @@
                         <tr>
                             <td>{{user.email}}</td>
                             <td>{{user.username}}</td>
+                            <td>{{user.office}}</td>
                             <td>{{user.date_joined}}</td>
                             <td>{{user.last_login}}</td>
                             <td>{{user.is_staff}}</td>
+                            <td>{{user.is_admin}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

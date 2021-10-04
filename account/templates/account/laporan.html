@@ -91,6 +91,7 @@
                                 <button type="button" id="{{rep.id}}" class="btn btn-primary btn-block"  onclick="viewReport(this.id)">
                                   View
                                 </button><br>
+                                {% if admin %}
                                 {% if rep.status == 'Selesai' %}
                                 <button type="button" id="{{rep.id}}" class="btn btn-danger btn-block" onclick="processReport(this.id)" disabled>Process</button>
                                 <button type="button" id="{{rep.id}}" class="btn btn-success btn-block" onclick="responReport(this.id,{{request.user.id}})" disabled>Respon</button>
@@ -100,6 +101,7 @@
                                 {% else %}
                                 <button type="button" id="{{rep.id}}" class="btn btn-danger btn-block" onclick="processReport(this.id)">Process</button>
                                 <button type="button" id="{{rep.id}}" class="btn btn-success btn-block" onclick="responReport(this.id,{{request.user.id}})" disabled>Respon</button>
+                                {% endif %}
                                 {% endif %}
                             </td>
                         </tr>
@@ -217,7 +219,13 @@
         <table>
             <tr>
                 <td>Keputusan</td>
-                <td><input type="text" id="respon_verdict"></td>
+                <td>
+                    <select id="respon_verdict">
+                        {% for cat in category %}
+                            <option value="{{cat.name}}">{{cat.name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>Feedback</td>

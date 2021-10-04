@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
@@ -11,7 +12,8 @@ from .serializers import ReportSerializer
 from report.models import Report
 
 class ReportAPIList(APIView):
-  
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, format=None):
         report = Report.objects.all()
         serializer = ReportSerializer(report, many=True)
@@ -29,6 +31,7 @@ class ReportAPIDetail(APIView):
     """
     Retrieve, update or delete a transformer instance
     """
+    permission_classes = (IsAuthenticated,)
     def get_object(self, pk):
         # Returns an object instance that should 
         # be used for detail views.
@@ -67,14 +70,17 @@ class ReportAPIDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class ReportList(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
 
 class ReportDetail(generics.RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
 
 class ReportbyUser(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
     serializer_class = ReportSerializer
 
     def get_queryset(self):

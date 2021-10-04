@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from account.models import Account
+from knox.models import AuthToken
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,8 +28,7 @@ class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
 
-class UserSerializer(serializers.ModelSerializer):
+class TokenSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Account
-        fields = ['id', 'username', 'email', 'date_joined', 'last_login']
-        
+        model = AuthToken
+        fields = ('token_key', 'user')

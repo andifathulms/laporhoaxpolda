@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from.serializers import FeedSerializer
 from feed.models import Feed
@@ -10,14 +11,17 @@ from feed.models import Feed
 from django.db.models import F
 
 class FeedList(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
     queryset = Feed.objects.all()
     serializer_class = FeedSerializer
 
 class FeedDetail(generics.RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
     queryset = Feed.objects.all()
     serializer_class = FeedSerializer
 
 class FeedAPIList(APIView):
+    permission_classes = (IsAuthenticated,)
   
     def get(self, request, format=None):
         feed = Feed.objects.all()
@@ -33,6 +37,7 @@ class FeedAPIList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class FeedAPIDetail(APIView):
+    permission_classes = (IsAuthenticated,)
     """
     Retrieve, update or delete a transformer instance
     """
