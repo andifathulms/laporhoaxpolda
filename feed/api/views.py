@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from.serializers import FeedSerializer
 from feed.models import Feed
@@ -19,7 +19,7 @@ class FeedDetail(generics.RetrieveAPIView):
     serializer_class = FeedSerializer
 
 class FeedAPIList(APIView):
-  
+    permission_classes = (AllowAny,)
     def get(self, request, format=None):
         feed = Feed.objects.all()
         serializer = FeedSerializer(feed, many=True)
@@ -34,6 +34,7 @@ class FeedAPIList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class FeedAPIDetail(APIView):
+    permission_classes = (AllowAny,)
     """
     Retrieve, update or delete a transformer instance
     """
