@@ -27,12 +27,12 @@ class Report(models.Model):
 	verdictJudge = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True,null=True,related_name="admin_account")
 	img_b64 = models.TextField(blank=True, null=True)
 
-	def save(self):
+	def save(self, *args, **kwargs):
 		if(self.img.file):
 			temp = base64.b64encode(self.img.file.read())
 			self.img_b64 = temp.decode('utf-8')
 			return super().save()
-		return super().save()
+		return super(Report,self).save(*args, **kwargs)
 
 class Category(models.Model):
 	id = models.BigAutoField(primary_key=True)
