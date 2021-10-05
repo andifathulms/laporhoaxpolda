@@ -48,6 +48,14 @@
 
                         </div>
                         <div class="form-group">
+                            <label for="kategori">Kategori</label>
+                            <select name="kategori" id="kategori">
+                                {% for cat in category %}
+                                    <option value="{{cat.name}}">{{cat.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="thumbnail">Thumbnail</label>
                             <input type="file" class="form-control" id="thumbnail" name="thumbnail">
                         </div>

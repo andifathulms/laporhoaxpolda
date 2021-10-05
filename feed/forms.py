@@ -6,4 +6,4 @@ class FeedForm(forms.ModelForm):
 
 	class Meta:
 		model = Feed
-		fields = ('title', 'content', 'thumbnail', 'author')
+		fields = ('title', 'content', 'thumbnail', 'author','kategori')

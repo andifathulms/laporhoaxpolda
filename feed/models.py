@@ -18,3 +18,8 @@ class Feed(models.Model):
 	author = models.ForeignKey(Account, on_delete=models.CASCADE)
 	date = models.DateTimeField(auto_now_add=True)
 	view = models.IntegerField(default=0)
+	kategori = models.CharField(max_length=100, default="None")
+
+class NewsCategory(models.Model):
+	id = models.BigAutoField(primary_key=True)
+	name = models.CharField(max_length=100)

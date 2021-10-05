@@ -27,6 +27,7 @@
                     <thead>
                         <tr>
                             <th>Judul</th>
+                            <th>Kategori</th>
                             <th>Thumbnail</th>
                             <th>Author</th>
                             <th>View</th>
@@ -36,6 +37,7 @@
                     <tfoot>
                         <tr>
                             <th>Judul</th>
+                            <th>Kategori</th>
                             <th>Thumbnail</th>
                             <th>Author</th>
                             <th>View</th>
@@ -46,6 +48,7 @@
                         {% for f in feeds %}
                         <tr>
                             <td>{{f.title}}</td>
+                            <td>{{f.kategori}}</td>
                             <td>
                                 <img src="{{f.thumbnail.url}}" alt="{{f.thumbnail.url}}" width="70px" height="70px">
                             </td>

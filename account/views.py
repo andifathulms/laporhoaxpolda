@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from report.models import Report, Category, Verdict
 from account.models import Account
-from feed.models import Feed
+from feed.models import Feed, NewsCategory
 from feed.forms import FeedForm
 
 from account.forms import AccountAuthenticationForm
@@ -117,21 +117,25 @@ def berita_view(request):
 def isi_berita_view(request):
 	form = FeedForm(request.POST or None)
 	user = Account.objects.filter(is_admin=True)
+	category = NewsCategory.objects.all()
 	if form.is_valid():
 		form.save()
+	else:
+		print (form.errors)
 	userxx = request.user
-	return render(request, "account/isiberita.html", {'form':form,'user':user, "staff":userxx.is_staff,"admin":userxx.is_admin})
+	return render(request, "account/isiberita.html", {'form':form,'user':user, "staff":userxx.is_staff,"admin":userxx.is_admin,"category":category})
 
 @login_required(login_url='/')
 def update_berita_view(request, pk):
 	obj = get_object_or_404(Feed, id = pk)
+	category = NewsCategory.objects.all()
 	print(obj)
 	form = FeedForm(request.POST or None, instance = obj)
 	user = Account.objects.filter(is_admin=True)
 	if form.is_valid():
 		form.save()
 	userxx = request.user
-	return render(request, "account/editberita.html", {'form':form,'user':user, "staff":userxx.is_staff,"admin":userxx.is_admin})
+	return render(request, "account/editberita.html", {'form':form,'user':user, "staff":userxx.is_staff,"admin":userxx.is_admin,"category":category})
 
 @login_required(login_url='/')
 def delete_berita_view(request, pk):
@@ -158,6 +162,22 @@ def kategori_view(request):
 
 	userxx = request.user
 	return render(request, "account/kategori.html", {"category":cats, "staff":userxx.is_staff,"admin":userxx.is_admin})
+
+@login_required(login_url='/')
+def kategori_berita_view(request):
+	category = NewsCategory.objects.all()
+	cats = []
+	if request.POST and "save" in request.POST:
+		data = request.POST
+		c = NewsCategory.objects.create(name=data["kategori"])
+		c.save()
+
+	for cat in category:
+		repcount = Feed.objects.filter(kategori=cat.name).count()
+		cats.append((cat, repcount))
+
+	userxx = request.user
+	return render(request, "account/kategori_berita.html", {"category":cats, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 @login_required(login_url='/')
 def keputusan_view(request):

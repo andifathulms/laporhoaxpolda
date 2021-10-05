@@ -30,7 +30,8 @@ from account.views import (
     user_view,
     logout_view,
     kategori_view,
-    keputusan_view)
+    keputusan_view,
+    kategori_berita_view)
 
 urlpatterns = [
     path('', login_view, name='main'),
@@ -38,6 +39,7 @@ urlpatterns = [
     path('home/', home_view, name='home'),
     path('laporan/', laporan_view, name='laporan'),
     path('kategori/', kategori_view, name='kategori'),
+    path('kategorinews/', kategori_berita_view, name='kategori-berita'),
     path('keputusan/', keputusan_view, name='keputusan'),
     path('berita/', berita_view, name='berita'),
     path('berita/add/', isi_berita_view, name='isi-berita'),
