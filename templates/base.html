@@ -103,7 +103,7 @@
         let feedback = document.querySelector(feedbackID);
         let admin = document.querySelector(adminID);
         let vdate = document.querySelector(vdateID);
-
+        /*
         console.log(date.textContent);
         console.log(email.textContent);
         console.log(username.textContent);
@@ -112,12 +112,15 @@
         console.log(category.textContent);
         console.log(status.textContent);
         console.log(description.textContent);
-        console.log(verdict.value);
+        console.log(verdict.value);*/
 
         $("#modal_nama").html(username.textContent);
         $("#modal_email").html(email.textContent);
         $("#modal_url").html(url.textContent);
-        $("#modal_imgl").html(img.textContent);
+        if(img){
+            $("#modal_img").html(img.textContent);
+        }
+        
         $("#modal_tanggal").html(date.textContent);
         $("#modal_category").html(category.textContent);
         $("#modal_status").html(status.textContent);

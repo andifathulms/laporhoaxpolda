@@ -109,16 +109,20 @@ def berita_view(request):
 		if data["delete"]:
 			feed = Feed.objects.get(id=data["id"])
 			feed.delete()
+	#feed_list = []
 	feed = Feed.objects.all()
+	#for f in feed:
+	#	feed_list.append((f,f.img_b64))
 	userxx = request.user
 	return render(request, "account/berita.html", {"feeds":feed, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 @login_required(login_url='/')
 def isi_berita_view(request):
-	form = FeedForm(request.POST or None)
+	form = FeedForm(request.POST, request.FILES)
 	user = Account.objects.filter(is_admin=True)
 	category = NewsCategory.objects.all()
 	if form.is_valid():
+		print("valid")
 		form.save()
 	else:
 		print (form.errors)

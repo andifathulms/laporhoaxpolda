@@ -2,6 +2,7 @@ from django.db import models
 from account.models import Account
 
 import time
+import base64
 
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
@@ -24,7 +25,14 @@ class Report(models.Model):
 	verdictDesc = models.TextField(blank=True,null=True)
 	verdictDate = models.DateTimeField(blank=True,null=True)
 	verdictJudge = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True,null=True,related_name="admin_account")
+	img_b64 = models.TextField(blank=True, null=True)
 
+	def save(self):
+		if(self.img.file):
+			temp = base64.b64encode(self.img.file.read())
+			self.img_b64 = temp.decode('utf-8')
+			return super().save()
+		return super().save()
 
 class Category(models.Model):
 	id = models.BigAutoField(primary_key=True)

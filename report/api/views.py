@@ -8,8 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 
-from .serializers import ReportSerializer
-from report.models import Report
+from .serializers import ReportSerializer, CategorySerializer
+from report.models import Report, Category
 
 class ReportAPIList(APIView):
     permission_classes = (IsAuthenticated,)
@@ -90,3 +90,11 @@ class ReportbyUser(generics.ListAPIView):
         """
         pk = self.kwargs['pk']
         return Report.objects.filter(user=pk)
+
+class CategoryAPIList(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+        cat = Category.objects.all()
+        serializer = CategorySerializer(cat, many=True)
+        return Response(serializer.data)
