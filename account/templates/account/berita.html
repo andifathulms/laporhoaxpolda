@@ -60,7 +60,7 @@
                             <td>{{f.author}}</td>
                             <td>{{f.view}}</td>
                             <td>
-                                <form action="{#% url 'update-berita' pk=f.id %#}">
+                                <form action="{% url 'detail-berita' pk=f.id %}">
                                     <button class="btn btn-lg btn-info btn-block" type="submit">View</button>
                                 </form>
                                 {% if admin %}   

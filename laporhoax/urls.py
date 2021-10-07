@@ -31,7 +31,8 @@ from account.views import (
     logout_view,
     kategori_view,
     keputusan_view,
-    kategori_berita_view)
+    kategori_berita_view,
+    detail_berita,)
 
 urlpatterns = [
     path('', login_view, name='main'),
@@ -45,6 +46,7 @@ urlpatterns = [
     path('berita/add/', isi_berita_view, name='isi-berita'),
     path('berita/update/<pk>', update_berita_view, name='update-berita'),
     path('berita/delete/<pk>', delete_berita_view, name='delete-berita'),
+    path('news/<pk>', detail_berita, name='detail-berita'),
     path('account/', user_view, name='account'),
     path('admin/', admin.site.urls),
     path('auth/', include('account.api.urls')),

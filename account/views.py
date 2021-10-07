@@ -116,6 +116,12 @@ def berita_view(request):
 	userxx = request.user
 	return render(request, "account/berita.html", {"feeds":feed, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
+def detail_berita(request, pk):
+	feed = get_object_or_404(Feed, id=pk)
+	context = {}
+	context["feed"] = feed
+	return render(request, "account/beritadetail.html", context)
+
 @login_required(login_url='/')
 def isi_berita_view(request):
 	form = FeedForm(request.POST, request.FILES)
