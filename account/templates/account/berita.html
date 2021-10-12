@@ -26,44 +26,48 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Judul</th>
-                            <th>Thumbnail</th>
-                            <th>Author</th>
-                            <th>View</th>
-                            <th>Action</th>
+                            <th style="text-align: center; vertical-align: middle;">Tanggal Terbit</th>
+                            <th style="text-align: center; vertical-align: middle;">Judul</th>
+                            <th style="text-align: center; vertical-align: middle;">Thumbnail</th>
+                            <th style="text-align: center; vertical-align: middle;">Author</th>
+                            <th style="text-align: center; vertical-align: middle;">View</th>
+                            <th style="text-align: center; vertical-align: middle;">Action</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>Judul</th>
-                            <th>Thumbnail</th>
-                            <th>Author</th>
-                            <th>View</th>
-                            <th>Action</th>
+                            <th style="text-align: center; vertical-align: middle;">Tanggal Terbit</th>
+                            <th style="text-align: center; vertical-align: middle;">Judul</th>
+                            <th style="text-align: center; vertical-align: middle;">Thumbnail</th>
+                            <th style="text-align: center; vertical-align: middle;">Author</th>
+                            <th style="text-align: center; vertical-align: middle;">View</th>
+                            <th style="text-align: center; vertical-align: middle;">Action</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         {% for f in feeds %}
                         <tr>
-                            <td>{{f.title}}</td>
+                            <td style="width: 10%; vertical-align: middle;">{{f.date}}</td>
+                            <td style="text-align: center; vertical-align: middle; width: 25%">{{f.title}}</td>
                             {% if f.thumbnail %}
-                            <td>
-                                <img src="{{f.thumbnail.url}}" alt="{{f.thumbnail}}" width="70px" height="70px">
-                                <!--<img src="data:image/jpg;base64,{{ f.img_b64 }}" width="80px" height="80px">-->
+                            <td style="text-align: center; vertical-align: middle;">
+                                <img src="{{f.thumbnail.url}}" alt="{{f.thumbnail}}" width="150px" height="150px">
                             </td>
                             {% else %}
                             <td></td>
                             {% endif %}
-                            <td>{{f.author}}</td>
-                            <td>{{f.view}}</td>
-                            <td>
+                            <td style="text-align: center; vertical-align: middle;">{{f.author}}</td>
+                            <td style="text-align: center; vertical-align: middle;">{{f.view}}</td>
+                            <td style="width: 10%">
                                 <form action="{% url 'detail-berita' pk=f.id %}">
                                     <button class="btn btn-lg btn-info btn-block" type="submit">View</button>
                                 </form>
+                                <hr>
                                 {% if admin %}   
                                 <form action="{% url 'update-berita' pk=f.id %}">
                                     <button class="btn btn-lg btn-warning btn-block" type="submit">Edit</button>
                                 </form>
+                                <hr>
                                 <form class="form-delete" action="{% url 'delete-berita' pk=f.id %}" method="POST">
                                     {% csrf_token %}
                                     <button id="btndelete" class="btn btn-lg btn-danger btn-block">Delete</button>

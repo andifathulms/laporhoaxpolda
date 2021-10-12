@@ -50,6 +50,7 @@ urlpatterns = [
     path('auth/', include('account.api.urls')),
     path('api/', include('feed.api.urls')),
     path('api/', include('report.api.urls')),
+    path('tinymce/', include('tinymce.urls')),
 ]
 
 if settings.DEBUG:

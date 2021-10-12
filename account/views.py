@@ -137,13 +137,14 @@ def isi_berita_view(request):
 @login_required(login_url='/')
 def update_berita_view(request, pk):
 	obj = get_object_or_404(Feed, id = pk)
-	print(obj)
+	print(obj.title)
 	form = FeedForm(request.POST or None, instance = obj)
+	formEdit = FeedForm(request.POST, request.FILES, instance = obj)
 	user = Account.objects.filter(is_admin=True)
-	if form.is_valid():
-		form.save()
+	if formEdit.is_valid():
+		formEdit.save()
 	userxx = request.user
-	return render(request, "account/editberita.html", {'form':form,'user':user, "staff":userxx.is_staff,"admin":userxx.is_admin})
+	return render(request, "account/editberita.html", {'obj':obj, 'form':form,'user':user, "staff":userxx.is_staff,"admin":userxx.is_admin})
 
 @login_required(login_url='/')
 def delete_berita_view(request, pk):

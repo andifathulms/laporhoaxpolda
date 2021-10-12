@@ -40,7 +40,9 @@
                         <hr/>
                         <img src="{{feed.thumbnail.url}}" alt="{{feed.thumbnail}}" width="100%" height="300px">
                         <p>
+                            {% autoescape off %}
                             {{feed.content}}
+                            {% endautoescape %}
                         </p>
                         
                         
