@@ -17,7 +17,7 @@ class Report(models.Model):
 	url = models.CharField(max_length = 200,blank=True,null=True)
 	img = models.ImageField(upload_to='reports/', default='reports/report-default.jpg', blank=True,null=True)
 	category = models.CharField(max_length = 150)
-	status = models.CharField(default="Saved", max_length = 20)
+	status = models.CharField(default="Belum diproses", max_length = 20)
 	isAnonym = models.BooleanField(default=False)
 	dateReported = models.DateTimeField(auto_now_add=True)
 	description = models.CharField(max_length = 150)

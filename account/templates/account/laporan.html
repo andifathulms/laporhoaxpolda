@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" href="{% static 'css/fa/all.min.css' %}" rel="stylesheet" type="text/css">
 <!--<link rel="stylesheet" href="{% static 'js/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">-->
-
+<script src="https://cdn.tiny.cloud/1/havldrt4zgo6yunsmxmsi0xltdkxj3wix14yetpjmxf1tyqw/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 {% endblock head %}
 
 {% block content %}
@@ -28,32 +28,32 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Date</th>
-                            <th>Email Pelapor</th>
-                            <th>Nama Pelapor</th>
-                            <th>URL</th>
-                            <th>Screenshot</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                            <th>Anonym</th>
-                            <th>Description</th>
-                            <th>Action</th>
+                            <th style="text-align: center; vertical-align: middle;">ID</th>
+                            <th style="text-align: center; vertical-align: middle;">Date</th>
+                            <th style="text-align: center; vertical-align: middle;">Email Pelapor</th>
+                            <th style="text-align: center; vertical-align: middle;">Nama Pelapor</th>
+                            <th style="text-align: center; vertical-align: middle;">URL</th>
+                            <th style="text-align: center; vertical-align: middle;">Screenshot</th>
+                            <th style="text-align: center; vertical-align: middle;">Category</th>
+                            <th style="text-align: center; vertical-align: middle;">Status</th>
+                            <th style="text-align: center; vertical-align: middle;">Anonym</th>
+                            <th style="text-align: center; vertical-align: middle;">Description</th>
+                            <th style="text-align: center; vertical-align: middle;">Action</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>ID</th>
-                            <th>Date</th>
-                            <th>Email Pelapor</th>
-                            <th>Nama Pelapor</th>
-                            <th>URL</th>
-                            <th>Screenshot</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                            <th>Anonym</th>
-                            <th>Description</th>
-                            <th>Action</th>
+                            <th style="text-align: center; vertical-align: middle;">ID</th>
+                            <th style="text-align: center; vertical-align: middle;">Date</th>
+                            <th style="text-align: center; vertical-align: middle;">Email Pelapor</th>
+                            <th style="text-align: center; vertical-align: middle;">Nama Pelapor</th>
+                            <th style="text-align: center; vertical-align: middle;">URL</th>
+                            <th style="text-align: center; vertical-align: middle;">Screenshot</th>
+                            <th style="text-align: center; vertical-align: middle;">Category</th>
+                            <th style="text-align: center; vertical-align: middle;">Status</th>
+                            <th style="text-align: center; vertical-align: middle;">Anonym</th>
+                            <th style="text-align: center; vertical-align: middle;">Description</th>
+                            <th style="text-align: center; vertical-align: middle;">Action</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -63,33 +63,33 @@
                             <input type="hidden" value="{{rep.verdictDate}}" id="verdictdate{{rep.id}}">
                             <input type="hidden" value="{{rep.verdictDesc}}" id="feedback{{rep.id}}">
                             <input type="hidden" value="{{rep.verdictJudge}}" id="admin{{rep.id}}">
-                            <td>{{rep.id}}</td>
-                            <td id="date{{rep.id}}">{{rep.dateReported}}</td>
+                            <td style="text-align: center; vertical-align: middle;">{{rep.id}}</td>
+                            <td id="date{{rep.id}}" style="text-align: center; vertical-align: middle;">{{rep.dateReported}}</td>
                             {% if rep.isAnonym == False %}
-                                <td id="email{{rep.id}}">{{rep.user.email}}</td>
-                                <td id="username{{rep.id}}">{{rep.user.username}}</td>
+                                <td id="email{{rep.id}}" style="text-align: center; vertical-align: middle;">{{rep.user.email}}</td>
+                                <td id="username{{rep.id}}" style="text-align: center; vertical-align: middle;">{{rep.user.username}}</td>
                             {% else %}
-                                <td id="email{{rep.id}}">******</td>
-                                <td id="username{{rep.id}}">******</td>
+                                <td id="email{{rep.id}}" style="text-align: center; vertical-align: middle;">******</td>
+                                <td id="username{{rep.id}}" style="text-align: center; vertical-align: middle;">******</td>
                             {% endif %}
-                            <td id="url{{rep.id}}">{{rep.url}}</td>
+                            <td id="url{{rep.id}}" style="text-align: center; vertical-align: middle;">{{rep.url}}</td>
                             {% if rep.img %}
-                            <td id="img{{rep.id}}">
-                                <img src="{{rep.img.url}}" alt="{{rep.img}}" width="70px" height="70px">
+                            <td id="img{{rep.id}}" style="text-align: center; vertical-align: middle;">
+                                <img src="{{rep.img.url}}" alt="{{rep.img}}" width="150px" height="150px">
                             </td>
                             {% else %}
                             <td></td>
                             {% endif %}
-                            <td id="category{{rep.id}}">{{rep.category}}</td>
+                            <td id="category{{rep.id}}" style="text-align: center; vertical-align: middle;">{{rep.category}}</td>
                             {% if rep.status == 'Selesai' %}
-                            <td id="status{{rep.id}}" style="font-weight: bold; color: green;">{{rep.status}}</td>
+                            <td id="status{{rep.id}}" style="font-weight: bold; color: green; text-align: center; vertical-align: middle;">{{rep.status}}</td>
                             {% elif rep.status == 'Proses' %}
-                            <td id="status{{rep.id}}" style="font-weight: bold; color: coral;">{{rep.status}}</td>
+                            <td id="status{{rep.id}}" style="font-weight: bold; color: coral; text-align: center; vertical-align: middle;">{{rep.status}}</td>
                             {% else %}
-                            <td id="status{{rep.id}}" style="font-weight: bold; color: black;">{{rep.status}}</td>
+                            <td id="status{{rep.id}}" style="font-weight: bold; color: black; text-align: center; vertical-align: middle;">{{rep.status}}</td>
                             {% endif %}
-                            <td id="isAnonym{{rep.id}}">{{rep.isAnonym}}</td>
-                            <td id="description{{rep.id}}">{{rep.description}}</td>
+                            <td id="isAnonym{{rep.id}}" style="text-align: center; vertical-align: middle;">{{rep.isAnonym}}</td>
+                            <td id="description{{rep.id}}" style="text-align: center; vertical-align: middle;">{{rep.description}}</td>
                             <td>
                                 <!--<button class="btn btn-lg btn-primary btn-block" type="submit" onclick="onSubmit({{rep.id}},{{value}})">Submit</button> -->
                                 <button type="button" id="{{rep.id}}" class="btn btn-primary btn-block"  onclick="viewReport(this.id)">
@@ -202,7 +202,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" id="proses_laporan">Proses</button>
-        <button type="button" class="btn btn-primary" id="proses_cetak">Proses dan cetak report</button>
+        <!--<button type="button" class="btn btn-primary" id="proses_cetak">Proses dan cetak laporan</button>-->
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -256,6 +256,18 @@ $(document).ready(function() {
         "paging": true
     });
 });
+</script>
+
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      height: 500,
+      plugins: 'a11ychecker advcode casechange export formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+      toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter pageembed permanentpen table',
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+   });
 </script>
 
 {% endblock script}
