@@ -17,9 +17,4 @@ class Migration(migrations.Migration):
             name='id',
             field=models.CharField(blank=True, default='20210929-002558', max_length=200, primary_key=True, serialize=False),
         ),
-        migrations.AlterField(
-            model_name='feed',
-            name='thumbnail',
-            field=models.ImageField(blank=True, default='uploads/feed/index.jpg', upload_to=functools.partial(feed.models.get_profile_image_filepath, *(), **{'time': '20210929-002558'})),
-        ),
     ]

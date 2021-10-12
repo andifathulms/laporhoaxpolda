@@ -16,9 +16,4 @@ class Migration(migrations.Migration):
             name='imgpath',
             field=models.CharField(blank=True, default='20210929-002943', max_length=200),
         ),
-        migrations.AlterField(
-            model_name='feed',
-            name='thumbnail',
-            field=models.ImageField(blank=True, default='uploads/feed/index.jpg', upload_to=feed.models.get_profile_image_filepath),
-        ),
     ]

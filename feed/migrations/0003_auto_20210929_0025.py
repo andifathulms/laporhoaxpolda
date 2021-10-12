@@ -8,7 +8,7 @@ import functools
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('feed', '0002_alter_feed_thumbnail'),
+        ('feed', '0001_initial'),
     ]
 
     operations = [
@@ -16,10 +16,5 @@ class Migration(migrations.Migration):
             model_name='feed',
             name='id',
             field=models.CharField(default='20210929-002516', max_length=200, primary_key=True, serialize=False),
-        ),
-        migrations.AlterField(
-            model_name='feed',
-            name='thumbnail',
-            field=models.ImageField(blank=True, default='uploads/feed/index.jpg', upload_to=functools.partial(feed.models.get_profile_image_filepath, *(), **{'time': '20210929-002516'})),
         ),
     ]

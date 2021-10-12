@@ -31,7 +31,6 @@ from account.views import (
     logout_view,
     kategori_view,
     keputusan_view,
-    kategori_berita_view,
     detail_berita,)
 
 urlpatterns = [
@@ -40,7 +39,6 @@ urlpatterns = [
     path('home/', home_view, name='home'),
     path('laporan/', laporan_view, name='laporan'),
     path('kategori/', kategori_view, name='kategori'),
-    path('kategorinews/', kategori_berita_view, name='kategori-berita'),
     path('keputusan/', keputusan_view, name='keputusan'),
     path('berita/', berita_view, name='berita'),
     path('berita/add/', isi_berita_view, name='isi-berita'),

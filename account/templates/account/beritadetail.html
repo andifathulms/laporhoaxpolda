@@ -38,7 +38,7 @@
                         <hr/>
                         <span>Ditulis Oleh : {{feed.author.username}}</span> | <span>Tanggal : {{feed.date}}</span> | <span>Kategori : {{feed.kategori}}</span>
                         <hr/>
-                        <img src="data:image/jpg;base64,{{ feed.img_b64 }}" width="100%" height="300px" alt="">
+                        <img src="{{feed.thumbnail.url}}" alt="{{feed.thumbnail}}" width="100%" height="300px">
                         <p>
                             {{feed.content}}
                         </p>

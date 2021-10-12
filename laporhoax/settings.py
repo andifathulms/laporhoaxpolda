@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'knox',
+    'storages',
 ]
 
 REST_FRAMEWORK = {
@@ -133,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
@@ -157,4 +158,16 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #LOGIN_REDIRECT_URL = '/auth/logged_in'
+
+AWS_ACCESS_KEY_ID="AKIAXSGIDQGEESDBZHGJ"
+AWS_SECRET_ACCESS_KEY="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"
+AWS_STORAGE_BUCKET_NAME="django-lapor-hoax"
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 django_heroku.settings(locals())

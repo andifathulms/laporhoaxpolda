@@ -73,10 +73,9 @@
                                 <td id="username{{rep.id}}">******</td>
                             {% endif %}
                             <td id="url{{rep.id}}">{{rep.url}}</td>
-                            {% if rep.img_b64 %}
+                            {% if rep.img %}
                             <td id="img{{rep.id}}">
-                                <img src="data:image/jpg;base64,{{ rep.img_b64 }}" width="80px" height="80px">
-                                <!--<img src="{{rep.img.url}}" alt="{{rep.img.url}}" width="70px" height="70px">-->
+                                <img src="{{rep.img.url}}" alt="{{rep.img}}" width="70px" height="70px">
                             </td>
                             {% else %}
                             <td></td>

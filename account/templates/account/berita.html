@@ -27,7 +27,6 @@
                     <thead>
                         <tr>
                             <th>Judul</th>
-                            <th>Kategori</th>
                             <th>Thumbnail</th>
                             <th>Author</th>
                             <th>View</th>
@@ -37,7 +36,6 @@
                     <tfoot>
                         <tr>
                             <th>Judul</th>
-                            <th>Kategori</th>
                             <th>Thumbnail</th>
                             <th>Author</th>
                             <th>View</th>
@@ -48,11 +46,10 @@
                         {% for f in feeds %}
                         <tr>
                             <td>{{f.title}}</td>
-                            <td>{{f.kategori}}</td>
-                            {% if f.img_b64 %}
+                            {% if f.thumbnail %}
                             <td>
-                                <!--<img src="{{f.thumbnail.url}}" alt="{{f.thumbnail.url}}" width="70px" height="70px">-->
-                                <img src="data:image/jpg;base64,{{ f.img_b64 }}" width="80px" height="80px">
+                                <img src="{{f.thumbnail.url}}" alt="{{f.thumbnail}}" width="70px" height="70px">
+                                <!--<img src="data:image/jpg;base64,{{ f.img_b64 }}" width="80px" height="80px">-->
                             </td>
                             {% else %}
                             <td></td>
